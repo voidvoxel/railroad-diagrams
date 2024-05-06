@@ -83,6 +83,7 @@ function hashProcess() {
 
 function process(input) {
 	if(!input) input = cleanInput(find('.input').value);
+	else input = cleanInput(input);
 	const standalone = find('#option-standalone').checked;
 	rrOptions.VS = parseInt(find("#option-vs").value, 10);
 	rrOptions.AR = parseInt(find("#option-ar").value, 10);
