@@ -42,6 +42,25 @@ document.addEventListener('DOMContentLoaded', initialProcess, false);
 window.addEventListener('hashchange', hashProcess, false);
 find('.info').addEventListener('input', _=>process(), false);
 
+const XSS_VULNERABILITY_CHARACTERS = [
+	'<',
+	'>',
+	'/',
+	'&',
+	'?'
+];
+
+function cleanInput(input) {
+	for (let vulnerability of XSS_VULNERABILITY_CHARACTERS) {
+		input = input.replaceAll(
+			vulnerability,
+			encodeURIComponent(vulnerability)
+		);
+	}
+
+	return input;
+}
+
 function initialProcess() {
 	if(location.hash && location.hash.length > 1) {
 		const code = decodeURIComponent(location.hash.substr(1));
@@ -63,7 +82,7 @@ function hashProcess() {
 }
 
 function process(input) {
-	if(!input) input = find('.input').value;
+	if(!input) input = cleanInput(find('.input').value);
 	const standalone = find('#option-standalone').checked;
 	rrOptions.VS = parseInt(find("#option-vs").value, 10);
 	rrOptions.AR = parseInt(find("#option-ar").value, 10);
